@@ -50,5 +50,10 @@ public class Webcrawl {
        
        
        Document web = Jsoup.connect("http://google.com").get();
-       Elements links = web.select()
+       Elements links = web.select("a[href]");
+       
+       for(Element link : links){
+           System.out.println("Link: " + link.attr("href"));
+           System.out.println("Name: " + link.text()+"\n");
+       }
 }}
