@@ -25,7 +25,32 @@ public class Webcrawl {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException{
-        // TODO code application logic here
+        //logic to get the title out of the webpage
+        Document web = Jsoup.connect("http://www.facebook.com").get();
+        System.out.println("Title of the page is: " + web.title()+ "\n");
+        
+        
+        //logic to extract links from the webpage
+       Elements links = web.select("a[href]");
+       
+       for(Element link : links){
+           System.out.println("Link: " + link.attr("href"));
+           System.out.println("Name: " + link.text()+"\n");
+       }
+        
+       //logic to scrap all the images link, write it in the txt file and display in the screen
+       Elements imags = web.getElementsByTag("img");
+       String images = "";
+       for(Element imag : imags){
+           images+=imag.attr("abs:src")+"\n";
+           System.out.println(imag.attr("src"));
+       }
+       
+       FileWriter imgWrite = new FileWriter("Images.txt");
+       imgWrite.write(images.toString());
+       imgWrite.close();
+       
+        //trasforming a HTML file
        File file = new File("web.html");
        Document doc = Jsoup.parse(file, "utf-8");
        
@@ -48,12 +73,5 @@ public class Webcrawl {
        writer.write(doc.toString());
        writer.close();  
        
-       
-       Document web = Jsoup.connect("http://google.com").get();
-       Elements links = web.select("a[href]");
-       
-       for(Element link : links){
-           System.out.println("Link: " + link.attr("href"));
-           System.out.println("Name: " + link.text()+"\n");
-       }
+              
 }}
